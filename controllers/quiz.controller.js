@@ -1,7 +1,7 @@
 const Quiz = require('../models/quiz.model');
 const Question = require('../models/question.model');
 
-// [cite: 28] POST /quizzes
+// POST /quizzes
 exports.createQuiz = async (req, res) => {
     try {
         const newQuiz = new Quiz(req.body);
@@ -12,7 +12,7 @@ exports.createQuiz = async (req, res) => {
     }
 };
 
-// [cite: 28] GET /quizzes (sử dụng populate) [cite: 29]
+//GET /quizzes (sử dụng populate) [cite: 29]
 exports.getAllQuizzes = async (req, res) => {
     try {
         const quizzes = await Quiz.find().populate('questions');
@@ -22,7 +22,7 @@ exports.getAllQuizzes = async (req, res) => {
     }
 };
 
-// [cite: 28] GET /quizzes/:quizId
+// GET /quizzes/:quizId
 exports.getQuizById = async (req, res) => {
     try {
         const quiz = await Quiz.findById(req.params.quizId).populate('questions');
@@ -33,7 +33,7 @@ exports.getQuizById = async (req, res) => {
     }
 };
 
-// [cite: 28] PUT /quizzes/:quizId
+// PUT /quizzes/:quizId
 exports.updateQuiz = async (req, res) => {
     try {
         const updatedQuiz = await Quiz.findByIdAndUpdate(req.params.quizId, req.body, { new: true });
@@ -44,7 +44,7 @@ exports.updateQuiz = async (req, res) => {
     }
 };
 
-// [cite: 28] DELETE /quizzes/:quizId
+// DELETE /quizzes/:quizId
 exports.deleteQuiz = async (req, res) => {
     try {
         const quiz = await Quiz.findById(req.params.quizId);
@@ -64,9 +64,8 @@ exports.deleteQuiz = async (req, res) => {
     }
 };
 
-// --- Các Yêu Cầu Đặc Biệt Của Bài ---
 
-// [cite: 34] POST /quizzes/:quizId/question (Tạo 1 câu hỏi mới trong quiz)
+//POST /quizzes/:quizId/question (Tạo 1 câu hỏi mới trong quiz)
 exports.addQuestionToQuiz = async (req, res) => {
     try {
         const quiz = await Quiz.findById(req.params.quizId);
@@ -86,7 +85,7 @@ exports.addQuestionToQuiz = async (req, res) => {
     }
 };
 
-// [cite: 35] POST /quizzes/:quizId/questions (Tạo nhiều câu hỏi mới trong quiz)
+// POST /quizzes/:quizId/questions (Tạo nhiều câu hỏi mới trong quiz)
 exports.addManyQuestionsToQuiz = async (req, res) => {
      try {
         const quiz = await Quiz.findById(req.params.quizId);
@@ -113,7 +112,7 @@ exports.addManyQuestionsToQuiz = async (req, res) => {
     }
 };
 
-// [cite: 33] GET /quizzes/:quizId/populate (Lọc câu hỏi có từ "capital")
+// GET /quizzes/:quizId/populate (Lọc câu hỏi có từ "capital")
 exports.getQuizWithFilteredQuestions = async (req, res) => {
     try {
         const quiz = await Quiz.findById(req.params.quizId).populate({
@@ -129,7 +128,7 @@ exports.getQuizWithFilteredQuestions = async (req, res) => {
 
         if (!quiz) return res.status(404).json({ message: 'Không tìm thấy quiz' });
 
-        // Lưu ý: Quiz vẫn sẽ được trả về,
+        //Quiz sẽ được trả về,
         // nhưng mảng 'questions' sẽ CHỈ chứa các câu hỏi khớp với điều kiện "match"
         res.status(200).json(quiz);
     } catch (err) {

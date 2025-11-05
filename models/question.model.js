@@ -1,20 +1,20 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// [cite: 22]
+
 const questionSchema = new Schema({
-    text: { // [cite: 24]
+    text: { 
         type: String,
         required: true
     },
-    options: [{ // [cite: 25]
+    options: [{
         type: String,
         required: true
     }],
-    keywords: [{ // [cite: 26]
+    keywords: [{ 
         type: String
     }],
-    correctAnswerIndex: { // [cite: 27]
+    correctAnswerIndex: { 
         type: Number,
         required: true
     }

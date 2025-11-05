@@ -1,6 +1,6 @@
 const Question = require('../models/question.model');
 
-// [cite: 28] POST /question
+//POST /question
 exports.createQuestion = async (req, res) => {
     try {
         const newQuestion = new Question(req.body);
@@ -11,7 +11,7 @@ exports.createQuestion = async (req, res) => {
     }
 };
 
-// [cite: 28] GET /question
+//GET /question
 exports.getAllQuestions = async (req, res) => {
     try {
         const questions = await Question.find();
@@ -21,7 +21,7 @@ exports.getAllQuestions = async (req, res) => {
     }
 };
 
-// [cite: 28] GET /question/:questionId
+// GET /question/:questionId
 exports.getQuestionById = async (req, res) => {
     try {
         const question = await Question.findById(req.params.questionId);
@@ -32,7 +32,7 @@ exports.getQuestionById = async (req, res) => {
     }
 };
 
-// [cite: 28] PUT /question/:questionId
+// PUT /question/:questionId
 exports.updateQuestion = async (req, res) => {
     try {
         const updatedQuestion = await Question.findByIdAndUpdate(req.params.questionId, req.body, { new: true });
@@ -43,7 +43,7 @@ exports.updateQuestion = async (req, res) => {
     }
 };
 
-// [cite: 28] DELETE /question/:questionId
+// DELETE /question/:questionId
 exports.deleteQuestion = async (req, res) => {
     try {
         const deletedQuestion = await Question.findByIdAndDelete(req.params.questionId);

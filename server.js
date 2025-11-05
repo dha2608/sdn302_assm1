@@ -12,7 +12,7 @@ app.use(express.json()); // Phân tích body của request dưới dạng JSON
 
 // Kết nối tới MongoDB 
 // Đảm bảo MongoDB của bạn đang chạy trên localhost:27017
-const dbURI = 'mongodb://localhost:27017/SimpleQuiz'; // [cite: 15, 28]
+const dbURI = 'mongodb://localhost:27017/SimpleQuiz';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Kết nối thành công tới MongoDB SimpleQuiz database...'))
     .catch(err => console.error('Không thể kết nối tới MongoDB...', err));
@@ -22,8 +22,8 @@ const quizRouter = require('./routes/quiz.router');
 const questionRouter = require('./routes/question.router');
 
 // Sử dụng routes 
-app.use('/quizzes', quizRouter); // [cite: 15, 28]
-app.use('/question', questionRouter); // [cite: 15, 28]
+app.use('/quizzes', quizRouter);
+app.use('/question', questionRouter);
 
 // Khởi động server
 app.listen(port, () => {
