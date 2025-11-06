@@ -17,6 +17,11 @@ const questionSchema = new Schema({
     correctAnswerIndex: { 
         type: Number,
         required: true
+    },
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 }, {
     timestamps: true

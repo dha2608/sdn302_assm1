@@ -1,29 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const quizController = require('../controllers/quiz.controller');
+const authenticate = require('../authenticate');
 
-// Định tuyến cho /quizzes
+// GET thì ai cũng xem được [cite: 108, 162]
 router.route('/')
     .get(quizController.getAllQuizzes)
-    .post(quizController.createQuiz);
+    // POST (tạo mới) thì phải là ADMIN [cite: 109, 146]
+    .post(authenticate.verifyUser, authenticate.verifyAdmin, quizController.createQuiz);
 
-// Định tuyến cho /quizzes/:quizId
+// GET thì ai cũng xem được [cite: 108, 162]
 router.route('/:quizId')
     .get(quizController.getQuizById)
-    .put(quizController.updateQuiz)
-    .delete(quizController.deleteQuiz);
+    // PUT (cập nhật) thì phải là ADMIN [cite: 109, 146]
+    .put(authenticate.verifyUser, authenticate.verifyAdmin, quizController.updateQuiz)
+    // DELETE (xóa) thì phải là ADMIN [cite: 109, 146]
+    .delete(authenticate.verifyUser, authenticate.verifyAdmin, quizController.deleteQuiz);
     
-
-// GET /quizzes/:quizId/populate (Lọc câu hỏi)
+// GET .../populate thì ai cũng xem được
 router.route('/:quizId/populate')
     .get(quizController.getQuizWithFilteredQuestions);
 
-//POST /quizzes/:quizId/question (Thêm 1 câu hỏi)
+// POST .../question (Thêm 1 câu hỏi)
+// Đây là hành động TẠO CÂU HỎI, nên áp dụng Task 4 -> cần verifyUser 
 router.route('/:quizId/question')
-    .post(quizController.addQuestionToQuiz);
+    .post(authenticate.verifyUser, quizController.addQuestionToQuiz);
 
-// POST /quizzes/:quizId/questions (Thêm nhiều câu hỏi)
+// POST .../questions (Thêm nhiều câu hỏi)
+// Tương tự, cần verifyUser 
 router.route('/:quizId/questions')
-    .post(quizController.addManyQuestionsToQuiz);
+    .post(authenticate.verifyUser, quizController.addManyQuestionsToQuiz);
 
 module.exports = router;
