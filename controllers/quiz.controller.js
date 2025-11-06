@@ -1,7 +1,6 @@
 const Quiz = require('../models/quiz.model');
 const Question = require('../models/question.model');
 
-// POST /quizzes
 exports.createQuiz = async (req, res) => {
     try {
         const newQuiz = new Quiz(req.body);
@@ -12,10 +11,9 @@ exports.createQuiz = async (req, res) => {
     }
 };
 
-// GET /quizzes (sử dụng populate)
+
 exports.getAllQuizzes = async (req, res) => {
     try {
-        // Populate thêm author của question
         const quizzes = await Quiz.find().populate({
             path: 'questions',
             populate: {
@@ -29,7 +27,6 @@ exports.getAllQuizzes = async (req, res) => {
     }
 };
 
-// GET /quizzes/:quizId
 exports.getQuizById = async (req, res) => {
     try {
         const quiz = await Quiz.findById(req.params.quizId).populate({
@@ -46,7 +43,6 @@ exports.getQuizById = async (req, res) => {
     }
 };
 
-// PUT /quizzes/:quizId
 exports.updateQuiz = async (req, res) => {
     try {
         const updatedQuiz = await Quiz.findByIdAndUpdate(req.params.quizId, req.body, { new: true });
@@ -57,7 +53,6 @@ exports.updateQuiz = async (req, res) => {
     }
 };
 
-// DELETE /quizzes/:quizId
 exports.deleteQuiz = async (req, res) => {
     try {
         const quiz = await Quiz.findById(req.params.quizId);
@@ -75,13 +70,10 @@ exports.deleteQuiz = async (req, res) => {
     }
 };
 
-// POST /quizzes/:quizId/question (Tạo 1 câu hỏi mới trong quiz)
 exports.addQuestionToQuiz = async (req, res) => {
     try {
         const quiz = await Quiz.findById(req.params.quizId);
         if (!quiz) return res.status(404).json({ message: 'Không tìm thấy quiz' });
-
-        // Gán author là user đang đăng nhập 
         req.body.author = req.user._id; 
         
         const newQuestion = new Question(req.body);
@@ -96,7 +88,7 @@ exports.addQuestionToQuiz = async (req, res) => {
     }
 };
 
-// POST /quizzes/:quizId/questions (Tạo nhiều câu hỏi mới trong quiz)
+
 exports.addManyQuestionsToQuiz = async (req, res) => {
      try {
         const quiz = await Quiz.findById(req.params.quizId);
@@ -106,7 +98,6 @@ exports.addManyQuestionsToQuiz = async (req, res) => {
             return res.status(400).json({ message: 'Request body phải là một mảng (array)' });
         }
 
-        // Gán author cho TẤT CẢ câu hỏi trong mảng 
         const questionsWithAuthor = req.body.map(q => ({
             ...q,
             author: req.user._id 
@@ -124,7 +115,6 @@ exports.addManyQuestionsToQuiz = async (req, res) => {
     }
 };
 
-// GET /quizzes/:quizId/populate (Lọc câu hỏi có từ "capital")
 exports.getQuizWithFilteredQuestions = async (req, res) => {
     try {
         const quiz = await Quiz.findById(req.params.quizId).populate({

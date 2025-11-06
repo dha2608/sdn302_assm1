@@ -10,7 +10,6 @@ const quizSchema = new Schema({
     description: { 
         type: String
     },
-    // Dùng để tham chiếu đến các questions
     questions: [{ 
         type: Schema.Types.ObjectId,
         ref: 'Question'

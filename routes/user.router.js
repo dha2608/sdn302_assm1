@@ -4,9 +4,8 @@ const User = require('../models/user.model');
 const passport = require('passport');
 const authenticate = require('../authenticate');
 
-// POST /users/signup - Đăng ký
 router.post('/signup', (req, res, next) => {
-    // User.register là hàm của passport-local-mongoose
+
     User.register(new User({ username: req.body.username }),
         req.body.password,
         (err, user) => {
@@ -15,11 +14,7 @@ router.post('/signup', (req, res, next) => {
                 res.setHeader('Content-Type', 'application/json');
                 res.json({ err: err });
             } else {
-                // Tùy chọn: tự động set admin nếu là user đầu tiên
-                // if (user.username === 'admin') {
-                //     user.admin = true;
-                //     user.save();
-                // }
+
                 
                 passport.authenticate('local')(req, res, () => {
                     res.statusCode = 200;
@@ -30,17 +25,15 @@ router.post('/signup', (req, res, next) => {
         });
 });
 
-// POST /users/login - Đăng nhập
+
 router.post('/login', passport.authenticate('local'), (req, res) => {
-    // Nếu đăng nhập thành công, tạo token
     const token = authenticate.getToken({ _id: req.user._id });
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.json({ success: true, token: token, status: 'Đăng nhập thành công!' });
 });
 
-// GET /users - (Task 3) Lấy tất cả user
-// [cite: 149, 150]
+
 router.route('/')
     .get(authenticate.verifyUser, authenticate.verifyAdmin, async (req, res, next) => {
         try {
